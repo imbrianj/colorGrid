@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" manifest="/manifest.appcache">
   <head>
     <title>Experiment with Color</title>
     <meta http-equiv="cache-control" content="no-cache" />
@@ -24,11 +24,14 @@
         background: rgb(122,122,122);
         height: 5%;
         padding: 0;
-        -moz-transition: all 3.5s ease-in-out;
-        -o-transition: all 3.5s ease-in-out;
-        -webkit-transition: all 3.5s ease-in-out;
-        transition: all 3.5s ease-in-out;
+        -moz-transition: all 2.5s linear;
+        -o-transition: all 2.5s linear;
+        -webkit-transition: all 2.5s linear;
+        transition: all 2.5s linear;
         width: 5%;
+      }
+      td:hover {
+        background: rgb(255,255,255) !important;
       }
     </style>
   </head>
@@ -478,6 +481,8 @@
       </tbody>
     </table>
     <script type="text/javascript">
+      /*jslint browser: true, white: true, for: true */
+      /*global document, setInterval */
       (function () {
         'use strict';
 
@@ -488,71 +493,74 @@
           var rows = document.getElementsByTagName('tr'),
               row,
               i    = 0,
-              j    = 0;
+              j    = 0,
+              loopCell = function (j, row) {
+                for(j; j < row.length; j += 1) {
+                  cells[i][j] = {node: row[j], r: 122, g: 122, b: 122};
+                }
+              };
 
           for(i; i < rows.length; i += 1) {
             row = rows[i].getElementsByTagName('td');
             cells[i] = [];
 
-            (function (j, row) {
-              for(j; j < row.length; j += 1) {
-                cells[i][j] = {node: row[j], r: 122, g: 122, b: 122};
-              }
-            }(j, row));
+            loopCell(j, row);
           }
         };
 
         var iterate = function () {
           var i = 0,
-              j = 0;
+              j = 0,
+              loopCell = function (cell, up, left) {
+                var colors = {r: cell.r,
+                              g: cell.g,
+                              b: cell.b},
+                    total  = 1;
+
+                if(up) {
+                  total += 1;
+
+                  colors.r += up.r;
+                  colors.g += up.g;
+                  colors.b += up.b;
+                }
+
+                if(left) {
+                  total += 1;
+
+                  colors.r += left.r;
+                  colors.g += left.g;
+                  colors.b += left.b;
+                }
+
+                colors.r = Math.round(colors.r / total);
+                colors.g = Math.round(colors.g / total);
+                colors.b = Math.round(colors.b / total);
+
+                colors.r += Math.floor(Math.random() * (variance + variance + 1)) - variance;
+                colors.g += Math.floor(Math.random() * (variance + variance + 1)) - variance;
+                colors.b += Math.floor(Math.random() * (variance + variance + 1)) - variance;
+
+                cell.r = Math.max(Math.min(colors.r, 255), 0);
+                cell.g = Math.max(Math.min(colors.g, 255), 0);
+                cell.b = Math.max(Math.min(colors.b, 255), 0);
+
+                cell.node.style.backgroundColor = 'rgb(' + colors.r + ',' + colors.g + ',' + colors.b + ')';
+              },
+              loopRows = function (i, j) {
+                var up,
+                    left;
+
+                for(j; j < cells[i].length; j += 1) {
+                  up   = i ? cells[(i - 1)][j] : null;
+                  left = j ? cells[i][(j - 1)] : null;
+
+                  loopCell(cells[(i)][j], up, left);
+                }
+              };
 
           for(i; i < cells.length; i += 1) {
-            (function (i, j) {
-              var up,
-                  left;
-
-              for(j; j < cells[i].length; j += 1) {
-                up   = i ? cells[(i - 1)][j] : null;
-                left = j ? cells[i][(j - 1)] : null;
-
-                (function (cell, up, left) {
-                  var colors = {r: cell.r,
-                                g: cell.g,
-                                b: cell.b},
-                      total  = 1;
-
-                  if(up) {
-                    total += 1;
-
-                    colors.r += up.r;
-                    colors.g += up.g;
-                    colors.b += up.b;
-                  }
-
-                  if(left) {
-                    total += 1;
-
-                    colors.r += left.r;
-                    colors.g += left.g;
-                    colors.b += left.b;
-                  }
-
-                  colors.r = Math.round(colors.r / total);
-                  colors.g = Math.round(colors.g / total);
-                  colors.b = Math.round(colors.b / total);
-
-                  colors.r += Math.floor(Math.random() * (variance + variance + 1)) - variance;
-                  colors.g += Math.floor(Math.random() * (variance + variance + 1)) - variance;
-                  colors.b += Math.floor(Math.random() * (variance + variance + 1)) - variance;
-
-                  cells[i][j].r = colors.r;
-                  cells[i][j].g = colors.g;
-                  cells[i][j].b = colors.b;
-
-                  cells[i][j].node.style.backgroundColor = 'rgb(' + colors.r + ',' + colors.g + ',' + colors.b + ')';
-                }(cells[(i)][j], up, left));
-              }
-            }(i, j));
+            loopRows(i, j);
           }
         };
 
@@ -561,8 +569,8 @@
 
         setInterval(function () {
           iterate();
-        }, 3000);
-      }())
+        }, 2500);
+      }());
     </script>
   </body>
 </html>

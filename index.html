@@ -24,14 +24,11 @@
         background: rgb(122,122,122);
         height: 5%;
         padding: 0;
-        -moz-transition: all 2.5s linear;
-        -o-transition: all 2.5s linear;
-        -webkit-transition: all 2.5s linear;
-        transition: all 2.5s linear;
+        -moz-transition: all .5s linear;
+        -o-transition: all .5s linear;
+        -webkit-transition: all .5s linear;
+        transition: all .5s linear;
         width: 5%;
-      }
-      td:hover {
-        background: rgb(255,255,255) !important;
       }
     </style>
   </head>
@@ -487,7 +484,7 @@
         'use strict';
 
         var cells    = [],
-            variance = 8;
+            variance = 5;
 
         var setup = function () {
           var rows = document.getElementsByTagName('tr'),
@@ -496,7 +493,7 @@
               j    = 0,
               loopCell = function (j, row) {
                 for(j; j < row.length; j += 1) {
-                  cells[i][j] = {node: row[j], r: 122, g: 122, b: 122};
+                  cells[i][j] = {node: row[j], r: 127, g: 127, b: 127};
                 }
               };
 
@@ -569,7 +566,7 @@
 
         setInterval(function () {
           iterate();
-        }, 2500);
+        }, 500);
       }());
     </script>
   </body>

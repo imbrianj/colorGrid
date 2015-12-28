@@ -24,10 +24,10 @@
         background: rgb(127,127,127);
         height: 4%;
         padding: 0;
-        -moz-transition: all .1s linear;
-        -o-transition: all .1s linear;
-        -webkit-transition: all .1s linear;
-        transition: all .1s linear;
+        -moz-transition: all .15s linear;
+        -o-transition: all .15s linear;
+        -webkit-transition: all .15s linear;
+        transition: all .15s linear;
         width: 4%;
       }
     </style>
@@ -47,7 +47,7 @@
             sides          = ['up', 'left', 'right'],
             // Cell size of the table.  Must match the CSS declaration of
             // height / width.
-            size           = {x: 25, y: 25},
+            size           = {x: 20, y: 20},
             // Element to append the table to.
             parent         = document.body,
             // Percent chance of a random event happening on any one cell.
@@ -57,7 +57,7 @@
             randomVariance = 200,
             // Timeout (measured in ms) between iterations.  Must match the CSS
             // declaration of transition timeout.
-            speed          = 100;
+            speed          = 150;
 
         var varianceCache       = ((variance * 2) + 1),
             randomVarianceCache = ((randomVariance * 2) + 1);

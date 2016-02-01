@@ -1,0 +1,5 @@
+CACHE MANIFEST
+# 1.31.16
+
+NETWORK:
+*

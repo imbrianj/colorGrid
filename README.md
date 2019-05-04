@@ -1,3 +1,3 @@
 # colorGrid
 Stupid experiment with color
-http://imbrianj.github.io/colorGrid/
+https://imbrianj.github.io/colorGrid/
